@@ -1,0 +1,33 @@
+För att byta storleken på spelet behöver man byta i följande klasser:
+- I klient-projekt:
+    - Controller: i getServerInput() metoden för att den kollar om en extra gång om det är tillåtet värde
+    - SnakeGameScreen: i kontruktorn. För att skapa gamePanel som har storleken som parameter.
+- I server-projekt:
+    - Server: i newSnakeLogic(). För att skapa en ny snakeLogic.
+
+
+Kommandon genom socket (skickar/tar emot):
+- I Klient-projekt:
+    - skickar värdet som parameter till sendCommando():
+        - 200: request highScore
+        - 201: request startGame
+        - currentPlayerName: vid uppdatering av HS
+    - tar emot:
+        - -5: vanliga spelvärden (läser då in x, y och type)
+        - -1: GameOver
+        - -2: HS skickas (läser in length of HS och hela listan)
+
+- I Server-projekt:
+    - skickar:
+        - -2: signalerar att HS kommer (skickar length of Hs och listan från json)
+        - genom buffer.put() skickas:
+            - -5 (uppdatering: x (0 till 8), y (0-8) och type (0-2))
+            - -1 (gameOver)
+    - tar emot
+        - 200: kommer skicka HS som finns i json filen, skickar då först -2
+        - 201: startar ett snakeGame, anropar newSnakeLogic
+
+//TODO:
+- Flera spel
+    - Inkludera spelen som ivan gjort i Server-projektet
+    - Ev. skapa motsvarande Panels för dem
